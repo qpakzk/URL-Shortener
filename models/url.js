@@ -1,21 +1,34 @@
+var timestamp = require('mongoose-timestamp');
+var paginate = require('mongoose-paginate');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var CounterSchema = Schema({
+var counterJson = require('./json/counter.json');
+var counterSchema = Schema(counterJson);
+
+/*
+var counterSchema = Schema({
     _id: {type: String, required: true},
-    seq: { type: Number, default: 0 }
+    cnt: { type: Number, default: 0 }
 });
+*/
 
-var counter = mongoose.model('counter', CounterSchema);
+counterSchema.plugin(timestamp);
+counterSchema.plugin(paginate);
 
-// create a schema for our links
+var counter = mongoose.model('counter', counterSchema);
+
+/*
 var urlSchema = new Schema({
   _id: {type: Number, index: true},
-  long_url: String,
-  created_at: Date
+  long_url: String
 });
+*/
 
-urlSchema.pre('save', function(next){
+var urlJson = require('./json/url.json');
+var urlSchema = Schema(urlJson);
+
+urlSchema.pre('save', function(next) {
   var doc = this;
   counter.findByIdAndUpdate({_id: 'url_count'}, {$inc: {seq: 1} }, function(error, counter) {
       if (error)
@@ -26,6 +39,9 @@ urlSchema.pre('save', function(next){
   });
 });
 
-var Url = mongoose.model('Url', urlSchema);
+urlSchema.plugin(timestamp);
+urlSchema.plugin(paginate);
 
-module.exports = Url;
+var url = mongoose.model('url', urlSchema);
+
+module.exports = url;

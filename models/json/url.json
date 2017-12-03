@@ -3,7 +3,6 @@
     "type": "Number",
     "index": true
   },
-
   "long_url": {
     "type": "String"
   }

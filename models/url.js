@@ -6,24 +6,10 @@ var Schema = mongoose.Schema;
 var counterJson = require('./json/counter.json');
 var counterSchema = Schema(counterJson);
 
-/*
-var counterSchema = Schema({
-    _id: {type: String, required: true},
-    cnt: { type: Number, default: 0 }
-});
-*/
-
 counterSchema.plugin(timestamp);
 counterSchema.plugin(paginate);
 
 var counter = mongoose.model('counter', counterSchema);
-
-/*
-var urlSchema = new Schema({
-  _id: {type: Number, index: true},
-  long_url: String
-});
-*/
 
 var urlJson = require('./json/url.json');
 var urlSchema = Schema(urlJson);

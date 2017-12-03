@@ -12,8 +12,7 @@ function registerURL(req, res) {
     if (url) {
       console.log("A: " + url._id);
       short_url = 'http://localhost:3000/' + base.encode(url._id);
-      //res.send({ 'short_url': short_url });
-      //res.redirect('http://localhost:3000/');
+      res.send({ 'short_url': short_url });
     }
     else {
       var new_url = Url({ long_url: long_url });
@@ -24,8 +23,7 @@ function registerURL(req, res) {
         }
         console.log("B: " + new_url._id);
         short_url = 'http://localhost:3000/' + base.encode(new_url._id);
-        //res.send({ 'short_url': short_url });
-        //res.redirect('http://localhost:3000/');
+        res.send({ 'short_url': short_url });
       });
     }
   });
@@ -38,7 +36,6 @@ function searchURL(req, res) {
   Url.findOne({ _id: id }, function (err, url) {
     if (url) {
       console.log('url.long_url: ' + url.long_url);
-      //res.send({ long_url:  url.long_url });
 
       var http = 'http://';
       var https = 'https://';

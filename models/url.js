@@ -3,20 +3,18 @@ var paginate = require('mongoose-paginate');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var counterJson = require('./json/counter.json');
-var counterSchema = Schema(counterJson);
-
-counterSchema.plugin(timestamp);
-counterSchema.plugin(paginate);
-
-var counter = mongoose.model('counter', counterSchema);
+var counter = require('./counter');
 
 var urlJson = require('./json/url.json');
 var urlSchema = Schema(urlJson);
 
+
+var counter = require('./counter');
+
+//1 증가시킨 id 값과 함께 url 저장
 urlSchema.pre('save', function(next) {
   var doc = this;
-  counter.findByIdAndUpdate({_id: 'url_count'}, {$inc: {seq: 1} }, function(error, counter) {
+  counter.findByIdAndUpdate({_id: 'url_count'}, {$inc: { seq: 1 } }, function(error, counter) {
       if (error)
           return next(error);
       doc.created_at = new Date();

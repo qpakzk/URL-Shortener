@@ -1,28 +1,35 @@
-var alphabet = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";
-var base = alphabet.length;
+var numbers = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var base = numbers.length;
 
-function encode(num) {
+/*
+ * Input : long_url의 정수 id 값
+ * Output : id 값을 base로 인코딩한 문자열 값
+ */
+function encode(id) {
   var encoded = '';
-  while (num){
-    var remainder = num % base;
-    num = Math.floor(num / base);
-    encoded = alphabet[remainder].toString() + encoded;
+  while (id) {
+    var remainder = id % base;
+    id = Math.floor(id / base);
+    encoded = numbers[remainder].toString() + encoded;
   }
+
   return encoded;
 }
 
-function decode(str) {
+/*
+ * Input : id 값을 base로 인코딩한 문자열 값
+ * Output : long_url의 정수 id 값
+ */
+function decode(encoded_id) {
   var decoded = 0;
-  while (str){
-    var index = alphabet.indexOf(str[0]);
-    var power = str.length - 1;
+  while (encoded_id) {
+    var index = numbers.indexOf(encoded_id[0]);
+    var power = encoded_id.length - 1;
     decoded += index * (Math.pow(base, power));
-    str = str.substring(1);
+    encoded_id = encoded_id.substring(1);
   }
+
   return decoded;
 }
 
-module.exports = {
-  encode,
-  decode
-}
+module.exports = { encode, decode }

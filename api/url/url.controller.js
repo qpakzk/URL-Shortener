@@ -1,48 +1,48 @@
-var base = require('./base');
-var Url = require('../models/url');
+var base = require('../base');
+var Url = require('../../models/url');
 
+//long_url의 id로 short_url을 생성
 function registerURL(req, res) {
   var long_url = req.body.long_url;
-  var short_url = '';
 
-  console.log('long_url: ' + long_url);
+  //long_url 찾기
   Url.findOne({ long_url: long_url }, function(err, url) {
-    console.log('url: ' + url);
-
+    //long_url이 존재하면
     if (url) {
-      console.log("A: " + url._id);
-      short_url = 'http://localhost:3000/' + base.encode(url._id);
+      //url의 id 값을 인코딩한 값을 이용하여 short_url 생성
+      var short_url = 'http://localhost:3000/' + base.encode(url._id);
       res.send({ 'short_url': short_url });
     }
-    else {
+    else {//long_url이 존재하지 않으면
+      //long_url을 저장하고 id값을 인코딩하여 short_url 생성
       var new_url = Url({ long_url: long_url });
-
       new_url.save(function(err) {
         if (err) {
           console.log(err);
         }
-        console.log("B: " + new_url._id);
-        short_url = 'http://localhost:3000/' + base.encode(new_url._id);
+
+        var short_url = 'http://localhost:3000/' + base.encode(new_url._id);
         res.send({ 'short_url': short_url });
       });
     }
   });
 }
 
+//short_url을 이용하여 long_url을 접속
 function searchURL(req, res) {
   var baseId = req.params.encoded_id;
   var id = base.decode(baseId);
 
+  //10진수 id 값으로 검색
   Url.findOne({ _id: id }, function (err, url) {
+    //id 값이 존재하면
     if (url) {
-      console.log('url.long_url: ' + url.long_url);
-
       var http = 'http://';
       var https = 'https://';
-      var full_url = '';
+
+      //http 프로토콜 체크
       if(url.long_url.indexOf(http) == -1 && url.long_url.indexOf(https) == -1) {
-        full_url = http + url.long_url;
-        res.redirect(full_url);
+        res.redirect(http + url.long_url);
       }
       else {
         res.redirect(url.long_url);

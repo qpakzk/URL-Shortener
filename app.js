@@ -1,27 +1,24 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
+//db 연결
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
     console.log('connect successfully');
 });
 
-var host = 'localhost';
-var dbname = 'url_shortener';
-mongoose.connect('mongodb://' + host + '/' + dbname, { useMongoClient: true });
+mongoose.connect('mongodb://localhost/url_shortener', { useMongoClient: true });
 
-var url = require('./api/url');
+var url = require('./api/url/url');
 
 var app = express();
 
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -33,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'views/index.html'));
 });
+
 app.use('/', url);
 
 // catch 404 and forward to error handler

@@ -7,14 +7,20 @@
   },
   "dependencies": {
     "body-parser": "~1.18.2",
+    "bson": "^4.0.2",
+    "clean-css": "^4.2.1",
+    "constantinople": "^3.1.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
     "jade": "~1.11.0",
+    "loadash": "^1.0.0",
+    "mime": "^2.4.4",
     "mongoose": "^4.13.5",
     "mongoose-paginate": "^5.0.3",
     "mongoose-timestamp": "^0.6.0",
     "morgan": "~1.9.1",
+    "mpath": "^0.6.0",
     "serve-favicon": "~2.4.5"
   }
 }
